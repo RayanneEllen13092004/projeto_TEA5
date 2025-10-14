@@ -3,6 +3,7 @@ package com.projetoTEA5.demo.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -20,14 +21,18 @@ public class User {
 
     private Boolean active = true;
 
+    @OneToOne(mappedBy = "user")
+    private Responsible responsible;
+
     public User() {
     }
 
-    public User(String email, String password, String profile, Boolean active) {
+    public User(String email, String password, String profile, Boolean active, Responsible responsible) {
         this.email = email;
         this.password = password;
         this.profile = profile;
         this.active = active;
+        this.responsible = responsible;
     }
 
     public Long getId() {
@@ -68,5 +73,13 @@ public class User {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Responsible getResponsible() {
+        return responsible;
+    }
+
+    public void setResponsible(Responsible responsible) {
+        this.responsible = responsible;
     }
 }
