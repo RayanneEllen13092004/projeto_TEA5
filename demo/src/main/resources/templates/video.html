@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/static/imgs/logo.svg" type="image/svg+xml">
+    <link rel="icon" th:href="@{/imgs/logo.svg}" type="image/svg+xml">
     <title>Videos</title>
-    <link rel="stylesheet" href="/static/css/video.css">
+    <link rel="stylesheet" th:href="@{/css/video.css}">
 </head>
 <body>
     <div class="container">
@@ -121,7 +121,7 @@
   </aside>
 
 
-    <script src="/static/js/video.js"></script>
+    <script th:src="@{/js/video.js}"></script>
     
 </body>
 </html>

@@ -1,22 +1,41 @@
 package com.projetoTEA5.demo.model;
 
-public class Person {
+import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
+@MappedSuperclass
+public abstract class Person {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String full_name;
+
+    @Column(name = "full_name", nullable = false)
+    private String fullName;
+
+    @Column(nullable = false, unique = true)
     private String cpf;
-    private String birth_date;
+
+    @Column(name = "birth_date", nullable = false)
+    private LocalDate birthDate;
+
+    @Column(nullable = false)
     private String gender;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Person() {
     }
 
-    public Person(Long id, String full_name, String cpf, String birth_date, String gender) {
-        this.id = id;
-        this.full_name = full_name;
+    public Person(String fullName, String cpf, LocalDate birthDate, String gender, User user) {
+        this.fullName = fullName;
         this.cpf = cpf;
-        this.birth_date = birth_date;
+        this.birthDate = birthDate;
         this.gender = gender;
+        this.user = user;
     }
 
     public Long getId() {
@@ -27,12 +46,12 @@ public class Person {
         this.id = id;
     }
 
-    public String getFull_name() {
-        return full_name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFull_name(String full_name) {
-        this.full_name = full_name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getCpf() {
@@ -43,12 +62,12 @@ public class Person {
         this.cpf = cpf;
     }
 
-    public String getBirth_date() {
-        return birth_date;
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirth_date(String birth_date) {
-        this.birth_date = birth_date;
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getGender() {
@@ -57,5 +76,13 @@ public class Person {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

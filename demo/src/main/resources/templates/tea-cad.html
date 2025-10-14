@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/static/imgs/logo.svg" type="image/svg+xml">
+    <link rel="icon" th:href="@{/imgs/logo.svg}" type="image/svg+xml">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Crimson+Pro:wght@400;600;700&display=swap" rel="stylesheet">
     <title>TEAcup - Cadastro</title>
-    <link rel="stylesheet" href="/static/css/tutor-cad.css">
+    <link rel="stylesheet" th:href="@{/css/tutor-cad.css}">
 </head>
 <body>      
     <div class="container decorative-corners">
@@ -126,7 +126,7 @@
         <div class="stars">✶ ✶ ✶</div>
 
 
-        <script src="/static/js/tea-cad.js"></script>
+        <script th:src="@{/js/tea-cad.js}"></script>
     </div>    
 </body>
 </html>

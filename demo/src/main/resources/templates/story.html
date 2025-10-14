@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/static/imgs/logo.svg" type="image/svg+xml">
+    <link rel="icon" th:href="@{/imgs/logo.svg}" type="image/svg+xml">
     <title>Relato do Dia</title>
-    <link rel="stylesheet" href="/static/css/story.css">
+    <link rel="stylesheet" th:href="@{/css/story.css}">
 </head>
 <body>
     <div class="container">
@@ -13,7 +13,7 @@
         
         <header class="header">
             <h1>Relato do Dia</h1>
-            <img src="/static/imgs/white-heart.webp" class="white-heart" alt="Small pin of a white heart.">
+            <img th:src="@{/imgs/white-heart.webp}" class="white-heart" alt="Small pin of a white heart.">
             <p class="subtitle">Páginas de vida no espectro autista</p>
             <nav class="nav-menu">
                 <a href="#" class="nav-item active">Todos os Relatos</a>
@@ -192,6 +192,6 @@
     </div>
 </div>    
 
-    <script src="/static/js/story.js"></script>
+    <script th:src="@{/js/story.js}"></script>
 </body>
 </html>

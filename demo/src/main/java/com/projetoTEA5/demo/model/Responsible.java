@@ -1,50 +1,58 @@
 package com.projetoTEA5.demo.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+
+import java.time.LocalDate;
 
 @Entity
 public class Responsible extends Person {
 
-    private String email;
-    private String contact_number;
+    @Column(name = "contact_number")
+    private String contactNumber;
+
+    @Column(nullable = false)
     private String cep;
-    private String public_place;
-    private String house_number;
+
+    @Column(name = "public_place", nullable = false)
+    private String publicPlace;
+
+    @Column(name = "house_number")
+    private String houseNumber;
+
+    @Column(nullable = false)
     private String neighbourhood;
+
+    @Column(nullable = false)
     private String city;
+
+    @Column(nullable = false)
     private String state;
+
+    @Column(nullable = false)
     private String complement;
 
     public Responsible() {
     }
 
-    public Responsible(Long id, String full_name, String cpf, String birth_date, String gender, String email, String contact_number, String cep, String public_place, String house_number, String neighbourhood, String city, String state, String complement) {
-        super(id, full_name, cpf, birth_date, gender);
-        this.email = email;
-        this.contact_number = contact_number;
+    public Responsible(String fullName, String cpf, LocalDate birthDate, String gender, User user, String contactNumber, String cep, String publicPlace, String houseNumber, String neighbourhood, String city, String state, String complement) {
+        super(fullName, cpf, birthDate, gender, user);
+        this.contactNumber = contactNumber;
         this.cep = cep;
-        this.public_place = public_place;
-        this.house_number = house_number;
+        this.publicPlace = publicPlace;
+        this.houseNumber = houseNumber;
         this.neighbourhood = neighbourhood;
         this.city = city;
         this.state = state;
         this.complement = complement;
     }
 
-    public String getEmail() {
-        return email;
+    public String getContactNumber() {
+        return contactNumber;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getContact_number() {
-        return contact_number;
-    }
-
-    public void setContact_number(String contact_number) {
-        this.contact_number = contact_number;
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
     }
 
     public String getCep() {
@@ -55,20 +63,20 @@ public class Responsible extends Person {
         this.cep = cep;
     }
 
-    public String getPublic_place() {
-        return public_place;
+    public String getPublicPlace() {
+        return publicPlace;
     }
 
-    public void setPublic_place(String public_place) {
-        this.public_place = public_place;
+    public void setPublicPlace(String publicPlace) {
+        this.publicPlace = publicPlace;
     }
 
-    public String getHouse_number() {
-        return house_number;
+    public String getHouseNumber() {
+        return houseNumber;
     }
 
-    public void setHouse_number(String house_number) {
-        this.house_number = house_number;
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
     }
 
     public String getNeighbourhood() {
