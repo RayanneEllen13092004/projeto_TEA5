@@ -23,7 +23,6 @@ public abstract class Person {
     @Column(nullable = false)
     private String gender;
 
-    @Column(nullable = false)
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
