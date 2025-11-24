@@ -1,16 +1,16 @@
 package com.projetoTEA5.demo.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class Responsible extends Person implements UserDetails {
+public class Responsible extends Person{
 
     @Column(name = "contact_number")
     private String contactNumber;
@@ -40,12 +40,18 @@ public class Responsible extends Person implements UserDetails {
     private String email;
 
     @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
     private Boolean active = true;
 
-    public Responsible(String contactNumber, String cep, String publicPlace, String houseNumber, String neighbourhood, String city, String state, String complement, String email, String password, Boolean active) {
+    @OneToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
+
+    @OneToMany(mappedBy = "responsible", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Dependent> dependents = new ArrayList<>();
+
+    public Responsible(String contactNumber, String cep, String publicPlace, String houseNumber,
+                       String neighbourhood, String city, String state, String complement, String email,
+                       Boolean active) {
         this.contactNumber = contactNumber;
         this.cep = cep;
         this.publicPlace = publicPlace;
@@ -55,7 +61,6 @@ public class Responsible extends Person implements UserDetails {
         this.state = state;
         this.complement = complement;
         this.email = email;
-        this.password = password;
         this.active = active;
     }
 
@@ -133,19 +138,6 @@ public class Responsible extends Person implements UserDetails {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public Boolean getActive() {
         return active;
     }
@@ -154,29 +146,20 @@ public class Responsible extends Person implements UserDetails {
         this.active = active;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
+    public List<Dependent> getDependents() {
+        return dependents;
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
+    public void setDependents(List<Dependent> dependents) {
+        this.dependents = dependents;
     }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
+    public Account getAccount() {
+        return account;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return this.active;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     @Override
@@ -191,7 +174,6 @@ public class Responsible extends Person implements UserDetails {
                 ", state='" + state + '\'' +
                 ", complement='" + complement + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", active=" + active +
                 "} " + super.toString();
     }

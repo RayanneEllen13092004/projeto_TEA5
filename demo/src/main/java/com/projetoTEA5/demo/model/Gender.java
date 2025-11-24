@@ -1,13 +1,11 @@
 package com.projetoTEA5.demo.model;
 
-import jakarta.persistence.Enumerated;
-
 public enum Gender {
 
-    MASCULINO("MASCULINO"),
-    FEMININO("FEMININO"),
-    OUTRO("OUTRO"),
-    NAO_INFORMADO("NAO-INFORMADO");
+    MASCULINO("Masculino"),
+    FEMININO("Feminino"),
+    OUTRO("Outro"),
+    NAO_INFORMADO("Prefiro não informar");
 
     private String gender;
 

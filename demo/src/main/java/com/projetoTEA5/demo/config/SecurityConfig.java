@@ -1,15 +1,13 @@
 package com.projetoTEA5.demo.config;
 
+import com.projetoTEA5.demo.service.AccountUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
@@ -17,6 +15,12 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 public class SecurityConfig {
+
+    private final AccountUserDetailsService accountUserDetailsService;
+
+    public SecurityConfig(AccountUserDetailsService accountUserDetailsService) {
+        this.accountUserDetailsService = accountUserDetailsService;
+    }
 
     @Bean
     public SecurityFilterChain configure(final HttpSecurity http) throws Exception{
@@ -33,10 +37,11 @@ public class SecurityConfig {
                         .loginPage("/tutor-login")
                         .loginProcessingUrl("/responsible/login")
                         .defaultSuccessUrl("/responsible/portal", true)
+                        .failureUrl("/tutor-login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/?logoutSuccess=true")
+                        .logoutSuccessUrl("/tutor-login?logoutSuccess=true")
                         .deleteCookies("JSESSIONID")
                 )
                 .exceptionHandling(exception -> exception
@@ -47,17 +52,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails user = User.withUsername("jairo@gmail.com")
-                .password(passwordEncoder.encode("123"))
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(user);
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 }

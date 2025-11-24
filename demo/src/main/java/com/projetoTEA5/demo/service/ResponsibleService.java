@@ -2,37 +2,53 @@ package com.projetoTEA5.demo.service;
 
 import com.projetoTEA5.demo.dto.ResponsibleDto;
 import com.projetoTEA5.demo.mapper.ResponsibleMapper;
+import com.projetoTEA5.demo.model.Account;
+import com.projetoTEA5.demo.model.Dependent;
 import com.projetoTEA5.demo.model.Responsible;
+import com.projetoTEA5.demo.repository.AccountRepository;
 import com.projetoTEA5.demo.repository.ResponsibleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ResponsibleService {
 
     private final ResponsibleRepository responsibleRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final AccountRepository accountRepository;
+    private final ResponsibleMapper responsibleMapper;
 
-    public ResponsibleService(ResponsibleRepository responsibleRepository, PasswordEncoder passwordEncoder){
+
+    public ResponsibleService(ResponsibleRepository responsibleRepository, AccountRepository accountRepository ,ResponsibleMapper responsibleMapper){
         this.responsibleRepository = responsibleRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.accountRepository = accountRepository;
+        this.responsibleMapper = responsibleMapper;
     }
 
+    @Transactional
     public void saveResponsible(ResponsibleDto responsibleDto){
-        System.out.println("Save Responsible");
-        String encryptedPassword = passwordEncoder.encode(responsibleDto.getPassword());
-        responsibleDto.setPassword(encryptedPassword);
-        Responsible responsible = ResponsibleMapper.toEntity(responsibleDto);
-        System.out.println(responsible.toString());
+
+        Responsible responsible = responsibleMapper.toResponsible(responsibleDto);
+        Account account = responsibleMapper.toAccount(responsibleDto, responsible);
+
+        responsible.setAccount(account);
+        account.setResponsible(responsible);
+
         responsibleRepository.save(responsible);
+        accountRepository.save(account);
     }
 
-    public Responsible responsibleByUsername(String username){
-        return responsibleRepository.findByEmail(username);
-    }
+    public List<Dependent> loadDependents(Account account){
 
-    public boolean verifyPassword(String passwordReceived, String encryptedPassword) {
-        return passwordEncoder.matches(passwordReceived, encryptedPassword);
+        Responsible responsible = responsibleRepository.findByAccount(account)
+                .orElseThrow(() -> new RuntimeException("Responsável não encontrado!"));
+
+        List<Dependent> dependents = responsible.getDependents();
+
+        return dependents;
+    }
+    public void cpfValidation(String cpf){
+
     }
 }
